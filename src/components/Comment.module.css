@@ -61,10 +61,6 @@
   border-radius: 2px;
 }
 
-.commentBox > footer > button:hover {
-  color: var(--green-400);
-}
-
 .commentBox > footer > button > svg {
   margin-right: 0.5rem;
 }
@@ -85,4 +81,8 @@
   display: block;
   font-size: 0.875rem;
   line-height: 1.6;
+}
+
+.commentBox > footer > button.likeButtonClicked {
+  color: var(--green-400);
 }

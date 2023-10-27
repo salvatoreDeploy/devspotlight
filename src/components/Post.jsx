@@ -14,6 +14,8 @@ export function Post({ author, publishedAt, content }) {
 
   const [newCommentText, setNewCommentText] = useState("");
 
+  console.log(newCommentText);
+
   const publishedDateFormatted = format(
     publishedAt,
     "dd 'de' LLLL 'às' HH:mm'h'",
@@ -34,8 +36,27 @@ export function Post({ author, publishedAt, content }) {
   }
 
   function handleNewCommentChange() {
+    event.target.setCustomValidity("");
     setNewCommentText(event.target.value);
   }
+
+  function deleteComment(commentToDelete) {
+    const commnetWithoutDeleteOne = comments.filter((comment) => {
+      return comment !== commentToDelete;
+    });
+
+    // console.log(`Deletar comentario ${commentToDelete}`);
+
+    setComments(commnetWithoutDeleteOne);
+  }
+
+  function handleNewCommentInvalid() {
+    console.log(
+      event.target.setCustomValidity("Esse campo deve ser preenchido!")
+    );
+  }
+
+  const isNewCommentEmpty = newCommentText.length === 0;
 
   return (
     <article className={styles.post}>
@@ -76,14 +97,24 @@ export function Post({ author, publishedAt, content }) {
           name="comment"
           onChange={handleNewCommentChange}
           value={newCommentText}
+          required
+          onInvalid={handleNewCommentInvalid}
         />
         <footer>
-          <button type="submit">Publicar</button>
+          <button type="submit" disabled={isNewCommentEmpty}>
+            Publicar
+          </button>
         </footer>
       </form>
       <div className={styles.commentList}>
         {comments.map((comment) => {
-          return <Commnent key={comment} content={comment} />;
+          return (
+            <Commnent
+              key={comment}
+              content={comment}
+              onDeleteComment={deleteComment}
+            />
+          );
         })}
       </div>
     </article>
